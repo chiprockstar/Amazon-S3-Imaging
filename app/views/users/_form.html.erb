@@ -1,0 +1,35 @@
+<%= form_for(@user, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :avatar_url %><br>
+    <%= f.file_field :avatar_url %>
+  </div>
+  <div id="some_target"><%= image_tag(@user.avatar_url) %></div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<script>
+
+function loadImage(path, width, height, target) {
+    $('<img src="'+ path +'">').load(function() {
+      $(this).width(width).height(height).appendTo(target);
+    });
+}
+
+</script>
