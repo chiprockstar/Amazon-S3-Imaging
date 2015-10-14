@@ -1,28 +1,81 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Thumbnail Images</h1>
-
-
-  <tbody>
-    <%= will_paginate @users%>
+<% if notice %>
+<div id="notice" data-fade="3000" class="alert" style="margin-left:20px;margin-right:20px;">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <%= notice %>
+</div>
+<% end %>
+<!-- <a id="notice" class="close" data-dismiss="alert"><#%= notice %></a> -->
+<center>
+<div id="myCarousel" class="carousel slide text-center" style="width:900px;">
+  <ol class="carousel-indicators">
+    <% x = 0 %>
+      <% @users.each do |user| %>
+    <li data-target="#myCarousel" data-slide-to=<%= "#{x}" %>></li>
+    <% x += 1 %>
+      <% end %>
+  </ol>
+  <!-- Carousel items -->
+  <div class="carousel-inner">
+    <% x = 0 %>
     <% @users.each do |user| %>
-      <!-- <tr> -->
-        <!-- <td> -->
+    <% if x == 0 %>
+    <div class="item active"><%= image_tag(user.avatar_url, width: 900, class: "img-rounded", alt: '') %>
+      <% x += 1 %>
+    <% else %>
+    <div class="item"><%= image_tag(user.avatar_url, width: 900, class: "img-rounded", alt: '') %>
 
-      <div style="float:left;margin:10px;width:200px;height:300px;padding:10px;"></br>
-        <%= link_to image_tag(user.avatar_url, width:200), user_path(user, page: params[:page]) %></br>
+    <% end %>
+      <div class"carousel-caption">
+        <h4><%= user.name %></h4>
+      </div>
+    </div>
+    <% end %>
+  </div>
+  <!-- Carousel nav -->
+  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+  <a class="carousel-control right" href="#myCarousel" data-slide=<%= "next" %>>&rsaquo;</a>
+</div>
+</center>
+
+<h4>Thumbnail Images</h4>
+<hr>
+  <tbody>
+    <%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+
+    <% @users.each do |user| %>
+
+      <div style="float:left;margin:1px;width:200px;height:220px;padding:1px;"></br>
+        <%= link_to image_tag(user.avatar_url, width:200, class: "img-rounded"), user_path(user, page: params[:page]) %></br>
         <%= user.name %></br>
         <%= link_to 'Show', user_path(user, page: params[:page]) %>
         <%= link_to 'Edit', edit_user_path(user, page: params[:page]) %>
         <%= link_to 'Destroy', user_path(user, page: params[:page]), method: :delete, data: { confirm: 'Are you sure?' } %>
       </div>
 
-      <!-- </tr> -->
     <% end %>
   </tbody>
 
 
-<br>
-<div style="clear:left;margin:10px;">
-<%= link_to 'New Image', new_user_path %>
+
+<div style="clear:left;">
+<%= link_to 'New Image', new_user_path, class: 'btn btn-primary', style: 'margin-top:30px' %>
 </div>
+</br>
+</br>
+
+
+
+
+
+<script>
+
+jQuery(document).ready(function($) {
+
+$('#myCarousel').carousel({
+    interval: 4000,
+    pause: ''
+});
+$( "#notice" ).fadeOut( 4000);
+
+});
+</script>

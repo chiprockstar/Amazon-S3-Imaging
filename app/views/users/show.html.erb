@@ -1,14 +1,18 @@
 <p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
+<hr>
+<p class="row text-center">
+  <!-- <strong>Name:</strong> -->
   <%= @user.name %>
 </p>
 
-<p>
-  <strong>Avatar url:</strong>
-  <%= image_tag(@user.avatar_url) %>
+<p class="row text-center">
+  <!-- <strong>Avatar url:</strong> -->
+  <%= image_tag(@user.avatar_url, class: 'img-rounded', width: '800' ) %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user, page: params[:page]) %> |
 <%= link_to 'Back', users_path(page: params[:page]) %>
+
+<!-- <#% s3 = Aws::S3::Resource.new(region:'us-east-1') %>
+<#% obj = s3.bucket('bbr-development').object('AKIAJNGMMW3LLR24NJ2A') %>
+<#% obj.upload_file('/Users/benself/Sites/chiprockstar/direct-s3-example/_DSC5750.JPG') %> -->

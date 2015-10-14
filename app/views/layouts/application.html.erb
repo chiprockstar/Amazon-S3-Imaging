@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>DirectS3Example</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
@@ -7,6 +7,17 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<%= yield %>
+
+<div class="container-fluid">
+  <div class="navbar navbar-fixed-top" style="margin-left:30px;margin-right:30px;margin-top:10px;">
+  <div class="navbar-inner" style="padding-left:10px;">
+    <%= link_to 'Amazon S3 Image Library', users_path, class: 'brand' %>
+    <ul class="nav">
+      <li><%= link_to 'Home', users_path %></li>
+    </ul>
+  </div>
+</div><p class="row" style="height:60px;"></p>
+  <%= yield %>
+</div><p class="row" style="height:100px;"></p>
 </body>
 </html>

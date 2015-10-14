@@ -1,3 +1,4 @@
+
 <%= form_for(@user, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
@@ -10,26 +11,74 @@
       </ul>
     </div>
   <% end %>
+  <% if @edit.nil? %>
+  <div id="dropzone" class="fade well">Drop files here</div>
+  <% end %>
+
+  <% if @edit.nil? %>
   <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <!-- <#%= f.label :avatar_url %><br> -->
+    <%= f.file_field 'img', :multiple => true, id: 'img', style: 'visibility:hidden;height:0px;' %>
+    <!-- <#%= f.hidden_field 'image'%> -->
   </div>
-  <div class="field">
-    <%= f.label :avatar_url %><br>
-    <%= f.file_field :avatar_url %>
+  <% end %>
+  <div id="some_target" style="margin-bottom:0px;">
+      <% if !@edit.nil? %>
+        <%= f.text_area :name, style: 'width:200px;margin:1px;padding:1px' %></br>
+        <%=  image_tag(@user.avatar_url, class: 'img-rounded', style: 'width:200px;margin:1px;padding:1px;') %>
+      <% end %>
   </div>
-  <div id="some_target"><%= image_tag(@user.avatar_url) %></div>
-  <div class="actions">
-    <%= f.submit %>
+</br>
+  <div class="row span12 pull-left" style="margin-bottom:10px;position:relative;top:20px;left:-22px;">
+    <%= f.submit "Save", :class => 'btn btn-primary submit' %></br></br>
+    <%= link_to 'Back', users_path( page: params[:page]) %>
   </div>
+
 <% end %>
 
 <script>
+$( document ).ready(function() {
+   $( ".progress" ).css( "visibility", "hidden");
+   $( ".field" ).css('height', '60px');
+
+
+   $(document).bind('dragover', function (e) {
+    var dropZone = $('#dropzone'),
+        timeout = window.dropZoneTimeout;
+    if (!timeout) {
+        dropZone.addClass('in');
+    } else {
+        clearTimeout(timeout);
+    }
+    var found = false,
+        node = e.target;
+    do {
+        if (node === dropZone[0]) {
+            found = true;
+            break;
+        }
+        node = node.parentNode;
+    } while (node != null);
+    if (found) {
+        dropZone.addClass('hover');
+    } else {
+        dropZone.removeClass('hover');
+    }
+    window.dropZoneTimeout = setTimeout(function () {
+        window.dropZoneTimeout = null;
+        dropZone.removeClass('in hover');
+    }, 100);
+});
+
+});
+
+
+
 
 function loadImage(path, width, height, target) {
-    $('<img src="'+ path +'">').load(function() {
-      $(this).width(width).height(height).appendTo(target);
-    });
+     $('<img src="'+ path +'" class=img-rounded>').load(function() {
+       $(this).width(width).appendTo(target);
+     });
 }
 
 </script>

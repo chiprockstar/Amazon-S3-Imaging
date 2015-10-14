@@ -1,5 +1,10 @@
-<h1>Editing User</h1>
-
+<h4>Edit Image Comment</h4>
+<hr>
 <%= render 'form' %>
-<%= link_to 'Show', user_path(@user, page: params[:page]) %> |
-<%= link_to 'Back', users_path( page: params[:page]) %>
+
+<script>
+$( document ).ready(function() {
+ $( ".submit" ).css( "visibility", "visible");
+});
+
+</script>

@@ -5,8 +5,9 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all.order("created_at desc").paginate(:page => params[:page], :per_page => 12)
+    @users = User.all.order("created_at desc").paginate(:page => params[:page], :per_page => 20)
     session[:page] = params[:page]
+    #@carousel = User.all.order("created_at desc")
   end
 
   # GET /users/1
@@ -17,20 +18,34 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @edit = nil
   end
 
   # GET /users/1/edit
   def edit
+    @edit = true
   end
 
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
+  #  binding.pry
+    avatar_url = params[:avatar_url]
+    name = params[:name]
+    name.reverse!
+    params[:avatar_url] = nil
+    params[:name] = nil
+    avatar_url.each_with_index do |avatar_url, index|
+      @user = User.new(user_params)
+      @user.avatar_url = avatar_url
+      @user.name = name[index]
+      @user.save
+    end
+
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_path, notice: 'User was successfully created.' }
+        format.html { redirect_to users_path, notice: 'Images were successfully added to library.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -44,7 +59,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to users_path, notice: 'User was successfully updated.' }
+        format.html { redirect_to users_path, notice: 'Image comments were successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
